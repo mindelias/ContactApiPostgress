@@ -11,6 +11,7 @@ export type Contact = {
   updatedAt: Date | string;
 };
 
+
 type ContactType = Contact & mongoose.Document;
 
 const contactsSchema = new mongoose.Schema({
