@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("@hapi/joi"));
+const contact_postgres_1 = require("../model/contact-postgres");
 const createUsersSchema = joi_1.default.object({
     fullname: joi_1.default
         .string()
@@ -12,10 +13,29 @@ const createUsersSchema = joi_1.default.object({
     email: joi_1.default
         .string()
         .trim()
+        .email()
         .required(),
     password: joi_1.default
         .string()
         .trim()
-        .email().length(6),
+        .required()
+        .min(6)
 });
+async function AddNewUsers(users) {
+    const { error, value } = createUsersSchema.validate(users, {
+        abortEarly: false,
+        stripUnknown: true
+    });
+    if (error) {
+        throw error.details[0].message;
+    }
+    const [checkEmail] = await contact_postgres_1.db.query(contact_postgres_1.sql `SELECT 1 FROM users WHERE email = ${value.email}`);
+    if (checkEmail != 0) {
+        return;
+    }
+    return contact_postgres_1.db.query(contact_postgres_1.sql `INSERT INTO users(fullname, email, password) VALUES(${value.fullname}, ${value.email}, ${value.password})
+    RETURNING *
+    `);
+}
+exports.AddNewUsers = AddNewUsers;
 //# sourceMappingURL=users.js.map

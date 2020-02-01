@@ -11,10 +11,11 @@ router.get('/users', async(_req, res) => {
 })
 
 router.post('/users', async(req, res) => {
-    const users = req.body;
+    const usersData = req.body;
+    // const email = req.body.email
 
     try {
-      const data = await AddNewUsers(users);
+      const data = await AddNewUsers(usersData);
   
       res.status(201).json({ data });
   
