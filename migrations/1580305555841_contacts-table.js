@@ -35,7 +35,13 @@ exports.up = pgm => {
       type: "timestamptz",
       nonNull: true,
       default: pgm.func("current_timestamp")
+    },
+    user_id: {
+      type: "VARCHAR(100)",
+      nonNull: true
     }
+    
+
   });
 
    

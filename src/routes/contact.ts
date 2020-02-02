@@ -1,5 +1,6 @@
-import { Router } from "express";
+import express,{ Router } from "express";
 import joi from "@hapi/joi";
+import { decodeToken} from '../helpers/helper';
 
 import {
   getContacts,
@@ -11,8 +12,9 @@ import {
 
 const router = Router();
 
-router.get("/contacts", async (_req, res) => {
-  const data = await getContacts();
+router.get("/contacts", async (req: express.Request, res) => {
+  const token = decodeToken(req.headers['token'])
+  const data = await getContacts(token);
 
   if (data.length === 0) {
     res.status(204).json({ data });
@@ -30,13 +32,15 @@ router.get("/contact/:contactID", async (req, res) => {
     .required()
     .validate(req.params.contactID, { presence: "required" });
 
+    const token = decodeToken(req.headers['token'])
+
   if (error) {
     res.status(400).json({ error });
 
     return;
   }
 
-  const data = await getContactByID(contactID);
+  const data = await getContactByID(contactID, token);
 
   if (data.length === 0) {
     res.status(404).json({ error: "Contact not found" });
@@ -49,9 +53,10 @@ router.get("/contact/:contactID", async (req, res) => {
 
 router.post("/contact", async (req, res) => {
   const contact = req.body;
+  const token = decodeToken(req.headers['token'])
 
   try {
-    const data = await createContact(contact);
+    const data = await createContact(contact, token);
 
     res.status(201).json({ data });
 
@@ -106,15 +111,21 @@ router.patch("/contact/:contactID", async (req, res) => {
   if (error) {
     throw error;
   }
+  
 
-  const data = await updateContact(contactID, value);
+  const token = decodeToken(req.headers['token'])
+
+  const data = await updateContact(contactID, value,token);
 
   res.status(200).json({ data });
 });
 
 router.delete("/contact/:contactID", async (req, res) => {
   const id = req.params.contactID;
-  await deleteContact(id);
+  
+  const token = decodeToken(req.headers['token'])
+
+  await deleteContact(id, token);
   res.status(200).json({ message: "deleted succesfuly" });
 });
 

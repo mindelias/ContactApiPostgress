@@ -1,48 +1,50 @@
 import { Router } from "express";
-import { AddNewUsers } from "../controllers/users";
-import { db, sql } from "../model/contact-postgres";
-import bcrypt from "bcryptjs";
-// import joi from "@hapi/joi";
+import { getUsers,AddNewUsers, Login } from "../controllers/users";
+ 
 
 const router = Router();
 
-router.get("/users", async (_req, res) => {
-  res.send("register a user");
+router.get("/users/register", async (_req, res) => {
+  const data = await getUsers();
+
+  if (data.length === 0) {
+    res.status(204).json({ data });
+
+    return;
+  }
+
+  res.status(200).json({ data });
 });
 
-router.post("/users", async (req, res) => {
+router.post("/users/register", async (req, res) => {
   const usersData = req.body;
   // const email = req.body.email
 
   try {
-    const data = AddNewUsers(usersData);
-    const [User] = await db.query(
-      sql`SELECT * FROM users WHERE email = ${data.email}`
-    );
-    console.log(User);
-
-    if (User) {
+    const data = await AddNewUsers(usersData);
+     
+    if (!data.length) {
       res.status(400).json("user with the email already exist");
     }
-    // Hash Password
-    bcrypt.genSalt(10, (_err, salt) =>
-      bcrypt.hash(data.password, salt, (err, hash) => {
-        if (err) {
-            res.status(500).send('server error')
-        }
-        data.password = hash;
-        db.query(
-          sql`INSERT INTO users(fullname, email, password) VALUES(${data.fullname}, ${data.email}, ${data.password})
-          RETURNING *
-          `
-        )
-          .then(result => res.status(201).json({ result }))
-          .catch(err => res.status(409).json(err));
-      })
-    );
+    res.status(200).json({ data });
+    
   } catch (err) {
     res.status(400).json({ error: err });
   }
+});
+
+router.post("/users/login", async (req, res) => {
+  const loginData = req.body;
+    try{
+    const data = await Login(loginData);
+    if(!data.length){
+      res.status(400).json({msg: 'users does not exist or invalid credential'})
+    }
+    res.status(200).json({ data });
+  }catch(err){
+    res.status(400).json({error:err})
+  }
+    
 });
 
 export default router;

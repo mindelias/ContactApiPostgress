@@ -5,10 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const joi_1 = __importDefault(require("@hapi/joi"));
+const helper_1 = require("../helpers/helper");
 const contact_1 = require("../controllers/contact");
 const router = express_1.Router();
-router.get("/contacts", async (_req, res) => {
-    const data = await contact_1.getContacts();
+router.get("/contacts", async (req, res) => {
+    const token = helper_1.decodeToken(req.headers['token']);
+    const data = await contact_1.getContacts(token);
     if (data.length === 0) {
         res.status(204).json({ data });
         return;
@@ -21,11 +23,12 @@ router.get("/contact/:contactID", async (req, res) => {
         .uuid({ version: "uuidv4" })
         .required()
         .validate(req.params.contactID, { presence: "required" });
+    const token = helper_1.decodeToken(req.headers['token']);
     if (error) {
         res.status(400).json({ error });
         return;
     }
-    const data = await contact_1.getContactByID(contactID);
+    const data = await contact_1.getContactByID(contactID, token);
     if (data.length === 0) {
         res.status(404).json({ error: "Contact not found" });
         return;
@@ -34,8 +37,9 @@ router.get("/contact/:contactID", async (req, res) => {
 });
 router.post("/contact", async (req, res) => {
     const contact = req.body;
+    const token = helper_1.decodeToken(req.headers['token']);
     try {
-        const data = await contact_1.createContact(contact);
+        const data = await contact_1.createContact(contact, token);
         res.status(201).json({ data });
         return;
     }
@@ -79,12 +83,14 @@ router.patch("/contact/:contactID", async (req, res) => {
     if (error) {
         throw error;
     }
-    const data = await contact_1.updateContact(contactID, value);
+    const token = helper_1.decodeToken(req.headers['token']);
+    const data = await contact_1.updateContact(contactID, value, token);
     res.status(200).json({ data });
 });
 router.delete("/contact/:contactID", async (req, res) => {
     const id = req.params.contactID;
-    await contact_1.deleteContact(id);
+    const token = helper_1.decodeToken(req.headers['token']);
+    await contact_1.deleteContact(id, token);
     res.status(200).json({ message: "deleted succesfuly" });
 });
 exports.default = router;
