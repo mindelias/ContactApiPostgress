@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "client": "yarn start --prefix client",
-    "server": "concurrently \"yarn dev\" \"yarn client\"",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "server": "nodemon ./bin/www",
+    "client": "cd client && yarn start",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
     "@databases/pg": "^2.0.0",
