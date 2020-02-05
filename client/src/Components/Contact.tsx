@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import blkphone from "../images/blkphone.jpg";
+import blkphone from "../images/blkphone.jpg"
 import Sidebar from "./Sidebar";
 import Signup from "./Signup";
 
