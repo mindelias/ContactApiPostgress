@@ -2,7 +2,8 @@ import React from "react";
 import {add_contact, delete_contact, set_alert,set_current, clear_current, filter_contact, clear_contact,clear_filter,update_contact} from './types'
  
 export interface Istate {
-  contacts: any[];
+  contacts: any[],
+  current:any
 }
 
 function ContactReducer(state: Istate, action: any) {
@@ -11,6 +12,11 @@ function ContactReducer(state: Istate, action: any) {
       return {
         ...state,
         contacts: [...state.contacts, action.payload]
+      };
+    case update_contact:
+      return {
+        ...state,
+        contacts: state.contacts.map(contact => contact.id === action.payload.id? action.payload: contact)
       };
     case delete_contact:
       return {
@@ -27,7 +33,7 @@ function ContactReducer(state: Istate, action: any) {
     case clear_current:
       return {
         ...state,
-         current: null
+        current: null
       };
     default:
       return state;
