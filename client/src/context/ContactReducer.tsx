@@ -2,7 +2,8 @@ import React from "react";
 import {add_contact, delete_contact, set_alert,set_current, clear_current, filter_contact, clear_contact,clear_filter,update_contact} from './types'
  
 export interface Istate {
-  contacts: any[];
+  contacts: any[],
+  current:any
 }
 
 function ContactReducer(state: Istate, action: any) {

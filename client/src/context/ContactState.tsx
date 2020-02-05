@@ -47,7 +47,8 @@ const initialState = {
       email: "terry@gmail.com",
       company: "Alison and co"
     }
-  ]
+  ],
+  current: null
 };
 
 // type Contact = {
