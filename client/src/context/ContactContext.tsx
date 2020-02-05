@@ -1,6 +1,17 @@
-import {createContext} from 'react';
+import { createContext } from "react";
 
-const ContactContext = 'hello'
-//  const ContactContext = createContext()
+import { Istate } from './ContactReducer';
 
-export default ContactContext
+interface Icontact {
+    state: Istate,
+    addContact: any,
+    deleteContact: any,
+    SetCurrent:any,
+    clearCurrent:any
+    
+     
+}
+
+const ContactContext = createContext({} as Icontact);
+
+export default ContactContext;

@@ -6,10 +6,12 @@ import {
 } from "react-router-dom";
 import Contact from './Components/Contact'
 import ViewContacts from './Components/ViewContacts'
+import ContactState from './context/ContactState'
 import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
+    <ContactState>
     <div className="App">
       <React.Fragment>
         <Router>
@@ -26,6 +28,7 @@ function App() {
         </Router>
       </React.Fragment>
     </div>
+    </ContactState> 
   );
 }
 

@@ -1,6 +1,10 @@
-import React from "react";
+import React, {useState }from "react";
 
 function Signup() {
+
+  const [contact, setContact] = useState({
+    
+  })
   return (
     <div className="container col-4">
       <form action="/action_page.php">
