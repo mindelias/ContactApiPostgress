@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import ContactContext from "./ContactContext";
 import ContactReducer from "./ContactReducer";
-import {Items} from '../Components/Contacts/ContactItem'
+import { Items } from "../Components/Contacts/ContactItem";
 // import ContactReducer from './ContactReducer'
 import {
   add_contact,
@@ -68,24 +68,38 @@ function ContactState(props: any) {
   const [state, dispatch] = useReducer(ContactReducer, initialState);
 
   // Add Contact
-  const addContact = (Contact:Items) => {
-    dispatch({type: add_contact, payload:Contact})
-  }
+  const addContact = (Contact: Items) => {
+    dispatch({
+      type: add_contact,
+      payload: Contact
+    });
+  };
   // Delete Contact
   const deleteContact = (id: string) => {
-    dispatch({type: delete_contact, payload:id})
-
-  }
+    dispatch({
+      type: delete_contact,
+      payload: id
+    });
+  };
   // set Current
-  const SetCurrent = (Contact:Items) => {
-    dispatch({ type: set_current, payload: Contact });
+  const SetCurrent = (Contact: Items) => {
+    dispatch({
+      type: set_current,
+      payload: Contact
+    });
+  };
+  // update contact
+  const updateContact = (Contact: Items) => {
+    dispatch({
+      type: update_contact,
+      payload: Contact
+    });
   };
 
   // clear Current
   const clearCurrent = () => {
     dispatch({ type: clear_current });
   };
-
 
   return (
     <ContactContext.Provider
@@ -94,7 +108,8 @@ function ContactState(props: any) {
         addContact,
         deleteContact,
         SetCurrent,
-        clearCurrent
+        clearCurrent,
+        updateContact
       }}
     >
       {props.children}

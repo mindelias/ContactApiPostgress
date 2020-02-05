@@ -13,6 +13,11 @@ function ContactReducer(state: Istate, action: any) {
         ...state,
         contacts: [...state.contacts, action.payload]
       };
+    case update_contact:
+      return {
+        ...state,
+        contacts: state.contacts.map(contact => contact.id === action.payload.id? action.payload: contact)
+      };
     case delete_contact:
       return {
         ...state,
@@ -28,7 +33,7 @@ function ContactReducer(state: Istate, action: any) {
     case clear_current:
       return {
         ...state,
-         current: null
+        current: null
       };
     default:
       return state;

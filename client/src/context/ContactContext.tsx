@@ -7,7 +7,8 @@ interface Icontact {
     addContact: any,
     deleteContact: any,
     SetCurrent:any,
-    clearCurrent:any
+    clearCurrent: any,
+    updateContact:any
     
      
 }
