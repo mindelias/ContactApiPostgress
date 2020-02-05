@@ -6,7 +6,8 @@ function AddContact() {
   const {
     state: { current },
     addContact,
-    clearCurrent
+    clearCurrent,
+    updateContact
   } = contactContext;
 
   useEffect(() => {
@@ -37,6 +38,8 @@ function AddContact() {
     e.preventDefault();
     if (current === null) {
       addContact(contact);
+    } else {
+      updateContact(contact)
     }
     setContact({
       first_name: "",
