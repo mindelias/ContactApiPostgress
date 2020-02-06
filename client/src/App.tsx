@@ -8,6 +8,7 @@ import Contact from './Components/Contact'
 import ViewContacts from './Components/ViewContacts'
 import ContactState from './context/ContactState'
 import AuthState from './context/auth/AuthState'
+import AlertState from './context/alert/AlertState'
 import SignUp from './Components/Signup'
 import SignIn from "./Components/SignIn";
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -16,6 +17,7 @@ function App() {
   return (
     <AuthState>
       <ContactState>
+        <AlertState>
         <div className="App">
           <React.Fragment>
             <Router>
@@ -33,7 +35,8 @@ function App() {
               </Switch>
             </Router>
           </React.Fragment>
-        </div>
+          </div>
+          </AlertState>
       </ContactState>
     </AuthState>
   );

@@ -39,7 +39,7 @@ function AddContact() {
     if (current === null) {
       addContact(contact);
     } else {
-      updateContact(contact)
+      updateContact(contact);
     }
     setContact({
       first_name: "",
@@ -111,18 +111,15 @@ function AddContact() {
           />
         </div>
 
-        <button
-          type="submit"
-          value={current ? "Update Contact" : " Add Contact"}
-          className="btn btn-primary"
-        >
+        <button type="submit" className="btn btn-primary">
+          {current ? "Update Contact" : " Add Contact"}
         </button>
         {current && (
           <div>
             <button
-              className="btn btn-light btn-block"
+              className="btn btn-secondary"
               onClick={clearAll}
-            ></button>
+            > clear</button>
           </div>
         )}
       </form>

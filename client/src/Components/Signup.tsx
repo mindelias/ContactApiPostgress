@@ -1,6 +1,10 @@
-import React, {useState }from "react";
+import React, { useState, useContext } from "react";
+import AlertContext from '../context/alert/AlertContext'
+import Alert from '../Components/layout/Alert'
+
 
 function Signup() {
+  const {SetAlert} = useContext(AlertContext)
 
   const [user, setUser] = useState({
     fullname: '',
@@ -16,13 +20,28 @@ function Signup() {
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('register user')
+    if (!fullname || !email || !password) {
+      SetAlert('Please enter all fields', 'danger')
+      
+    }
+    else if (password !== password2) {
+      SetAlert('Password do not match', 'danger')
+      
+    }
+    else if (password.length < 6) {
+      SetAlert(`Password must be atleast 6 charcters, you are currently using ${password.length} character`, 'warning')
+      }
+    else {
+      console.log('User Registered')
+      
+    }
   };
 
 
 
   return (
     <div className="container col-4">
+      <Alert/>
       <form onSubmit = {handleSubmit}>
         <div className="form-group">
           <input

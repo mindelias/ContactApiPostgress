@@ -1,17 +1,17 @@
-import { set_alert, remove_alert } from '../types'
+import { set_alert, remove_alert } from "../types";
 
-// interface Istate: {
+export interface Istate {
+  id: string;
+  msg: string;
+  type: string;
+}
 
-//     (string | number)[] 
-// }
-    
-
-function AlertReducer(state:(string)[] , action: any) {
+function AlertReducer(state: Istate[], action: any) {
   switch (action.type) {
     case set_alert:
       return [...state, action.payload];
     case remove_alert:
-      return state.filter(alert => alert.id !== action.payload)
+      return state.filter(alert => alert.id !== action.payload);
 
     default:
       return state;
@@ -19,5 +19,3 @@ function AlertReducer(state:(string)[] , action: any) {
 }
 
 export default AlertReducer;
-
-
