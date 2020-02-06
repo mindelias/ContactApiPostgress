@@ -116,7 +116,6 @@ function AddContact() {
           value={current ? "Update Contact" : " Add Contact"}
           className="btn btn-primary"
         >
-          Submit
         </button>
         {current && (
           <div>

@@ -7,28 +7,35 @@ import {
 import Contact from './Components/Contact'
 import ViewContacts from './Components/ViewContacts'
 import ContactState from './context/ContactState'
+import AuthState from './context/auth/AuthState'
+import SignUp from './Components/Signup'
+import SignIn from "./Components/SignIn";
 import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
-    <ContactState>
-    <div className="App">
-      <React.Fragment>
-        <Router>
-          {/* <Sidebar /> */}
-          <Switch>
-            <Route exact path="/">
-              <Contact />
-            </Route>
-            <Route exact path="/contacts">
-              <ViewContacts/>
-            </Route>
-            
-          </Switch>
-        </Router>
-      </React.Fragment>
-    </div>
-    </ContactState> 
+    <AuthState>
+      <ContactState>
+        <div className="App">
+          <React.Fragment>
+            <Router>
+              {/* <Sidebar /> */}
+              <Switch>
+                <Route exact path="/">
+                  <Contact />
+                </Route>
+                <Route exact path="/login">
+                  <SignIn/>
+                </Route>
+                <Route exact path="/contacts">
+                  <ViewContacts />
+                </Route>
+              </Switch>
+            </Router>
+          </React.Fragment>
+        </div>
+      </ContactState>
+    </AuthState>
   );
 }
 
