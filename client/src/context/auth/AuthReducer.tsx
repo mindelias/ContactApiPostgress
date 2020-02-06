@@ -3,7 +3,7 @@ import {REGISTER_SUCCESS, REGISTER_FAIL} from '../types'
 
 export interface Istate {
     token: string | null,
-    isAunthenticated: null,
+    isAunthenticated: boolean | null,
     loading: boolean,
     user:boolean | null ,
     error:boolean | null
