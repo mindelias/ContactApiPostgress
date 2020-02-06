@@ -3,7 +3,8 @@ import { Istate } from './AuthReducer'
 import { Interface } from "readline";
 
 interface Iauth{
-    state:Istate
+    state: Istate,
+    Register:any
 
 }
 

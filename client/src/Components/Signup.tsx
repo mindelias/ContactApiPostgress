@@ -1,48 +1,52 @@
-import React, { useState, useContext } from "react";
-import AlertContext from '../context/alert/AlertContext'
-import Alert from '../Components/layout/Alert'
-
+import React, { useState, useContext, useEffect } from "react";
+import AlertContext from "../context/alert/AlertContext";
+import Alert from "../Components/layout/Alert";
+import AuthContext from "../context/auth/AuthContext";
 
 function Signup() {
-  const {SetAlert} = useContext(AlertContext)
+  const { SetAlert } = useContext(AlertContext);
+  const {
+    Register,
+    state: { error }
+  } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (error) {
+      SetAlert(error, "danger");
+    }
+  }, [error]);
 
   const [user, setUser] = useState({
-    fullname: '',
-    email: '',
-    password: '',
-    password2:''
-
-    
-  })
-  const { fullname, email, password, password2 } = user
+    fullname: "",
+    email: "",
+    password: "",
+    password2: ""
+  });
+  const { fullname, email, password, password2 } = user;
   const onchangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value })
-  }
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!fullname || !email || !password) {
-      SetAlert('Please enter all fields', 'danger')
-      
-    }
-    else if (password !== password2) {
-      SetAlert('Password do not match', 'danger')
-      
-    }
-    else if (password.length < 6) {
-      SetAlert(`Password must be atleast 6 charcters, you are currently using ${password.length} character`, 'warning')
-      }
-    else {
-      console.log('User Registered')
-      
+      SetAlert("Please enter all fields", "danger");
+    } else if (password !== password2) {
+      SetAlert("Password do not match", "danger");
+    } else if (password.length < 6) {
+      SetAlert(
+        `Password must be atleast 6 charcters, you are currently using ${password.length} character`,
+        "warning"
+      );
+    } else {
+      Register({ fullname, email, password });
+      console.log(Register({ fullname, email, password }));
     }
   };
 
-
-
   return (
     <div className="container col-4">
-      <Alert/>
-      <form onSubmit = {handleSubmit}>
+      <Alert />
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
             type="text"
