@@ -20,6 +20,13 @@ export interface Istate {
 
 function AuthReducer(state: Istate, action: any) {
   switch (action.type) {
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: action.payload
+      };
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       return {
@@ -30,6 +37,7 @@ function AuthReducer(state: Istate, action: any) {
         error: false
       };
     case REGISTER_FAIL:
+    case AUTH_ERROR:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -37,9 +45,16 @@ function AuthReducer(state: Istate, action: any) {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error:action.payload
-        
-        
+        error: action.payload
+      };
+    case LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+        error: false
       };
 
     default:

@@ -40,6 +40,7 @@ async function getUsers() {
     return contact_postgres_1.db.query(contact_postgres_1.sql `SELECT * FROM  users;`);
 }
 exports.getUsers = getUsers;
+// Add new Users
 async function AddNewUsers(users) {
     const { error, value } = createUsersSchema.validate(users, {
         abortEarly: false,
@@ -73,6 +74,12 @@ async function AddNewUsers(users) {
     return newObj;
 }
 exports.AddNewUsers = AddNewUsers;
+// Get Validated Users
+async function getLoggedUsers(decoded) {
+    return contact_postgres_1.db.query(contact_postgres_1.sql `SELECT * FROM  users WHERE id=${decoded.id};`);
+}
+exports.getLoggedUsers = getLoggedUsers;
+// Login users Validation
 async function Login(data) {
     const { error, value } = createLoginSchema.validate(data, {
         abortEarly: false,

@@ -7,6 +7,7 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const morgan_1 = __importDefault(require("morgan"));
+// import expressBuyan from 'express-bunyan-logger'
 const index_1 = __importDefault(require("./routes/index"));
 const contact_1 = __importDefault(require("./routes/contact"));
 const user_1 = __importDefault(require("./routes/user"));
@@ -16,6 +17,8 @@ const app = express_1.default();
 app.set('views', path_1.default.join(__dirname, '../', 'views'));
 app.set('view engine', 'ejs');
 app.use(morgan_1.default('dev'));
+app.use(require('express-bunyan-logger')());
+// app.use(expressBuyan());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'public')));

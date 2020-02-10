@@ -2,7 +2,7 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch, // for server rendering
-  Route
+  Route, Redirect
 } from "react-router-dom";
 import Contact from './Components/Contact'
 import ViewContacts from './Components/ViewContacts'
@@ -11,8 +11,13 @@ import AuthState from './context/auth/AuthState'
 import AlertState from './context/alert/AlertState'
 import SignUp from './Components/Signup'
 import SignIn from "./Components/SignIn";
+import  setAuthToken from './utils/setAuthToken'
 import "bootstrap/dist/css/bootstrap.min.css"
 
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+ 
 function App() {
   return (
     <AuthState>

@@ -2,19 +2,27 @@ import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../context/alert/AlertContext";
 import Alert from "../Components/layout/Alert";
 import AuthContext from "../context/auth/AuthContext";
+import { Redirect, useHistory } from "react-router";
 
-function Signup() {
+
+function Signup(props: any) {
+  const history = useHistory()
   const { SetAlert } = useContext(AlertContext);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
   const {
     Register,
-    state: { error }
+    state: { error, isAuthenticated }
   } = useContext(AuthContext);
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('./contacts')
+    }
+
     if (error) {
       SetAlert(error, "danger");
     }
-  }, [error]);
+  }, [error, isAuthenticated]);
 
   const [user, setUser] = useState({
     fullname: "",

@@ -2,6 +2,7 @@ import React, { useReducer } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 import axios from "axios";
+import setAuthToken from "../../utils/setAuthToken";
 // import { Items } from "../Components/Contacts/ContactItem";
 
 import {
@@ -20,6 +21,7 @@ interface formData {
   email: string;
   password: string;
 }
+type loginData = Pick<formData, "email" | "password">;
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -41,14 +43,55 @@ function AuthState(props: any) {
     };
     try {
       const res = await axios.post("/api/users/register", data, config);
-      console.log(res.data.data[0])
+      console.log(res.data.data[0]);
       dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+      
+      loadUser();
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
         payload: error.response.data
       });
-      console.log(error.response)
+      console.log(error.response);
+    }
+  };
+  // Load user
+
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+
+    try {
+      const res = await axios.get("/api/users/login");
+      console.log(res.data.data[0]);
+      dispatch({ type: USER_LOADED, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: error.response.data
+      });
+      console.log(error.response);
+    }
+  };
+
+  // Login User
+  const Login = async (data: loginData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    try {
+      const res = await axios.post("/api/users/login", data, config);
+      console.log(res.data.data[0]);
+      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error.response.data
+      });
+      console.log(error.response);
     }
   };
 
@@ -56,7 +99,9 @@ function AuthState(props: any) {
     <AuthContext.Provider
       value={{
         state,
-        Register
+        Register,
+        Login,
+        loadUser
       }}
     >
       {props.children}

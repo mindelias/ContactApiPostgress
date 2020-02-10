@@ -1,6 +1,18 @@
-import React, { useState } from "react";
+import React, { useState , useContext, useEffect} from "react";
+import AuthContext from '../context/auth/AuthContext'
+import AlertContext from "../context/alert/AlertContext";
+
 
 function SignIn() {
+  const { state: {error} , Login} = useContext(AuthContext); 
+  const { SetAlert } = useContext(AlertContext)
+  
+  useEffect(() => {
+    if (error) {
+      SetAlert(error, "danger");
+    }
+  }, [error]);
+   
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -9,13 +21,23 @@ function SignIn() {
   const onchangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("login sucesful");
+ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault();
+   if ( !email || !password) {
+     SetAlert("Please enter all fields", "danger");
+   }  
+    else {
+     Login({  email, password });
+     
+   }
   };
-
+  
+  // if (shouldRedirect) {
+  //   return <Redirect to="/contacts" />;
+  // }
+//  const [shouldRedirect, setShouldRedirect] = useState(false);
   return (
-    <div className="container col-4">
+    <div className="container col-4 my-5">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
@@ -41,7 +63,7 @@ function SignIn() {
         </div>
 
         <button type="submit" className="btn btn-info">
-          Register
+          Login
         </button>
       </form>
     </div>

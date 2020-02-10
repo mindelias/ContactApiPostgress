@@ -1,6 +1,11 @@
-import { Router } from "express";
-import { getUsers,AddNewUsers, Login } from "../controllers/users";
- 
+import express, { Router } from "express";
+import {
+  getUsers,
+  AddNewUsers,
+  Login,
+  getLoggedUsers
+} from "../controllers/users";
+import { decodeToken } from "../helpers/helper";
 
 const router = Router();
 
@@ -13,7 +18,7 @@ router.get("/users/register", async (_req, res) => {
     return;
   }
 
-  res.status(200).json({ data });
+  res.status(200).json({ data }); 
 });
 
 router.post("/users/register", async (req, res) => {
@@ -22,29 +27,39 @@ router.post("/users/register", async (req, res) => {
 
   try {
     const data = await AddNewUsers(usersData);
-     
+
     if (!data.length) {
-      res.status(400).json("user with the email already exist");
+      return res.status(400).json({error:"user with the email already exist"});
     }
-    res.status(200).json({ data });
-    
+    return res.status(200).json({ data });
   } catch (err) {
-    res.status(400).json({ err });
+    return res.status(400).json({ err });
+  }
+});
+
+router.get("/users/login", async (req: express.Request, res) => {
+  const token = decodeToken(req.headers["token"]);
+  try {
+    const data = await getLoggedUsers(token);
+    res.status(200).json({ data });
+  } catch (error) {
+    res.status(500).send("internal server  error noticed by Aminat");
   }
 });
 
 router.post("/users/login", async (req, res) => {
   const loginData = req.body;
-    try{
+  try {
     const data = await Login(loginData);
-    if(!data.length){
-      res.status(400).json({msg: 'users does not exist or invalid credential'})
+    if (!data.length) {
+      res
+        .status(400)
+        .json({ msg: "users does not exist or invalid credential" });
     }
     res.status(200).json({ data });
-  }catch(err){
-    res.status(400).json({error:err})
+  } catch (err) {
+    res.status(400).json({ error: err });
   }
-    
 });
 
 export default router;

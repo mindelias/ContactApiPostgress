@@ -4,8 +4,9 @@ import { Interface } from "readline";
 
 interface Iauth{
     state: Istate,
-    Register:any
-
+    Register: any, 
+    Login: any,
+    loadUser:any
 }
 
 const authContext = createContext({} as Iauth)

@@ -115,7 +115,7 @@ router.patch("/contact/:contactID", async (req, res) => {
 
   const token = decodeToken(req.headers['token'])
 
-  const data = await updateContact(contactID, value,token);
+  const data = await updateContact(contactID, value, token);
 
   res.status(200).json({ data });
 });
