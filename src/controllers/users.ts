@@ -51,6 +51,7 @@ const createLoginSchema = joi.object<loginUsers>({
 export async function getUsers() {
   return db.query(sql`SELECT * FROM  users;`);
 }
+// Add new Users
 export async function AddNewUsers(users: createUsers) {
   const { error, value } = createUsersSchema.validate(users, {
     abortEarly: false,
@@ -73,8 +74,8 @@ export async function AddNewUsers(users: createUsers) {
   // Hash Password
   const salt = await bcrypt.genSalt(10);
   value.password = await bcrypt.hash(value.password, salt);
-  if(!value.password){
-    return []
+  if (!value.password) {
+    return [];
   }
   const [newUser] = await db.query(
     sql`INSERT INTO users(fullname, email, password) VALUES(${value.fullname}, ${value.email}, ${value.password})
@@ -92,7 +93,12 @@ export async function AddNewUsers(users: createUsers) {
 
   return newObj;
 }
+// Get Validated Users
+export async function getLoggedUsers(decoded: any) {
+  return db.query(sql`SELECT * FROM  users WHERE id=${decoded.id};`);
+}
 
+// Login users Validation
 export async function Login(data: createUsers) {
   const { error, value } = createLoginSchema.validate(data, {
     abortEarly: false,

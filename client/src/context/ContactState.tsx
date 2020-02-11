@@ -10,7 +10,6 @@ import {
   set_alert,
   set_current,
   filter_contact,
-  clear_contact,
   clear_filter,
   clear_current
 } from "./types";
@@ -48,7 +47,8 @@ const initialState = {
       company: "Alison and co"
     }
   ],
-  current: null
+  current: null,
+  filter: null
 };
 
 // type Contact = {
@@ -101,6 +101,18 @@ function ContactState(props: any) {
     dispatch({ type: clear_current });
   };
 
+  // Filter contact
+  const filterContact = (text:any) => {
+    dispatch({
+      type: filter_contact,
+      payload: text
+    });
+  };
+  // clear Current
+  const clearFilter = () => {
+    dispatch({ type: clear_filter });
+  };
+
   return (
     <ContactContext.Provider
       value={{
@@ -109,7 +121,9 @@ function ContactState(props: any) {
         deleteContact,
         SetCurrent,
         clearCurrent,
-        updateContact
+        updateContact,
+        filterContact, 
+        clearFilter
       }}
     >
       {props.children}

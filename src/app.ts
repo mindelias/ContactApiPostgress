@@ -2,7 +2,7 @@ import createError, { HttpError } from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import logger from 'morgan';
-import expressBuyan from 'express-bunyan-logger'
+// import expressBuyan from 'express-bunyan-logger'
 
 import indexRouter from './routes/index';
 import contactRouter from './routes/contact';
@@ -16,8 +16,8 @@ app.set('views', path.join(__dirname, '../', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(require('express-bunyan-logger')());
-app.use(expressBuyan());
+// app.use(require('express-bunyan-logger')());
+// app.use(expressBuyan());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../', 'public')));

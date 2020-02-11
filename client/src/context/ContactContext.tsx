@@ -8,7 +8,9 @@ interface Icontact {
     deleteContact: any,
     SetCurrent:any,
     clearCurrent: any,
-    updateContact:any
+    updateContact: any,
+    filterContact: any,
+    clearFilter:any
     
      
 }

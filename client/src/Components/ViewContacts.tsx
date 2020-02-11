@@ -1,6 +1,7 @@
 import React from "react";
 import Contacts from "../Components/Contacts/Contacts";
 import AddContact from "./Contacts/AddContact";
+import FilterContact from './Contacts/FilterContact'
 
 function ViewContacts() {
   return (
@@ -10,6 +11,7 @@ function ViewContacts() {
           <AddContact />
         </div>
         <div className="col-md-6">
+          <FilterContact/>
           <Contacts />
         </div>
       </div>

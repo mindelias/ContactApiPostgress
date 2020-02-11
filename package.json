@@ -7,10 +7,22 @@
     "migrate": "node-pg-migrate",
     "server": "nodemon ./bin/www",
     "client": "cd client && yarn start",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "test": "jest"
+  },
+  "pg": {
+    "test": {
+      "migrationsScript": [
+        "yarn",
+        "run",
+        "migrate",
+        "up"
+      ]
+    }
   },
   "dependencies": {
     "@databases/pg": "^2.0.0",
+    "@databases/pg-test": "^1.0.3",
     "@hapi/joi": "^17.1.0",
     "@types/jwt-decode": "^2.2.1",
     "bcryptjs": "^2.4.3",
