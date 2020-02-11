@@ -16,7 +16,7 @@ app.set('views', path.join(__dirname, '../', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(require('express-bunyan-logger')());
+// app.use(require('express-bunyan-logger')());
 // app.use(expressBuyan());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

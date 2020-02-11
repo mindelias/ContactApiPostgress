@@ -50,7 +50,7 @@ function AuthState(props: any) {
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: error.response.data
+        payload: error.response.data.error
       });
       console.log(error.response);
     }

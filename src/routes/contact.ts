@@ -51,7 +51,7 @@ router.get("/contact/:contactID", async (req, res) => {
   res.status(200).json({ data });
 });
 
-router.post("/contact", async (req, res) => {
+router.post("/contacts", async (req, res) => {
   const contact = req.body;
   const token = decodeToken(req.headers['token'])
 

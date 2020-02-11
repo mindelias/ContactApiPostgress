@@ -52,13 +52,13 @@ router.post("/users/login", async (req, res) => {
   try {
     const data = await Login(loginData);
     if (!data.length) {
-      res
+     return  res
         .status(400)
         .json({ msg: "users does not exist or invalid credential" });
     }
-    res.status(200).json({ data });
+    return res.status(200).json({ data });
   } catch (err) {
-    res.status(400).json({ error: err });
+    return res.status(400).json({ error: err });
   }
 });
 
