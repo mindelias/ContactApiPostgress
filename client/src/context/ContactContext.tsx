@@ -2,8 +2,9 @@ import { createContext } from "react";
 
 import { Istate } from './ContactReducer';
 
-interface Icontact {
+export interface Icontact {
     state: Istate,
+    getContact:any
     addContact: any,
     deleteContact: any,
     SetCurrent:any,

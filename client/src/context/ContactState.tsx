@@ -2,8 +2,11 @@ import React, { useReducer } from "react";
 import ContactContext from "./ContactContext";
 import ContactReducer from "./ContactReducer";
 import { Items } from "../Components/Contacts/ContactItem";
+import axios from "axios";
+import { Icontact } from "./ContactContext";
 // import ContactReducer from './ContactReducer'
 import {
+  GET_CONTACTS,
   add_contact,
   delete_contact,
   update_contact,
@@ -21,34 +24,10 @@ import Contact from "../Components/Contact";
 // };
 
 const initialState = {
-  contacts: [
-    {
-      id: "1e069db5-c15d-4d1c-8924-93254ddc394c",
-      first_name: "Abila",
-      last_name: "Adams",
-      phone: "0816458970",
-      email: "southwest@gmail.com",
-      company: "Teragon"
-    },
-    {
-      id: "e8371e87-0869-414d-b5fb-2437b56cb1b3",
-      first_name: "Abilu",
-      last_name: "hadeson",
-      phone: "0816458970",
-      email: "south@gmail.com",
-      company: "Teragon"
-    },
-    {
-      id: "03f96519-6b7b-4f42-8c64-00c26e77f4fe",
-      first_name: "Terry",
-      last_name: "Silver",
-      phone: "0816459070",
-      email: "terry@gmail.com",
-      company: "Alison and co"
-    }
-  ],
+  contacts: null,
   current: null,
-  filter: null
+  filter: null,
+  loading: false
 };
 
 // type Contact = {
@@ -64,22 +43,52 @@ const initialState = {
 //   contacts: Contact[];
 // };
 
-function ContactState(props: any) {
+function ContactState(props: React.PropsWithChildren<unknown>) {
   const [state, dispatch] = useReducer(ContactReducer, initialState);
+  // Get Contacts
+  const getContact = async () => {
+    try {
+      const res = await axios.get("api/contacts");
+      console.log(res.data.data);
+      dispatch({
+        type: GET_CONTACTS,
+        payload: res.data.data
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   // Add Contact
-  const addContact = (Contact: Items) => {
-    dispatch({
-      type: add_contact,
-      payload: Contact
-    });
+  const addContact = async (Contact: Items) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    try {
+      const res = await axios.post("api/contacts", Contact, config);
+      console.log(res.data.data);
+      dispatch({
+        type: add_contact,
+        payload: res.data.data
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   // Delete Contact
-  const deleteContact = (id: string) => {
-    dispatch({
-      type: delete_contact,
-      payload: id
-    });
+  const deleteContact = async (id: string) => {
+    try {
+      await axios.delete(`api/contact/${id}`);
+      dispatch({
+        type: delete_contact,
+        payload: id
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   // set Current
   const SetCurrent = (Contact: Items) => {
@@ -89,11 +98,23 @@ function ContactState(props: any) {
     });
   };
   // update contact
-  const updateContact = (Contact: Items) => {
-    dispatch({
-      type: update_contact,
-      payload: Contact
-    });
+  const updateContact = async (Contact: Items) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    try {
+      const res = await axios.patch(`api/contact/${Contact.id}`, Contact, config);
+       dispatch({
+         type: update_contact,
+         payload: res.data.data
+       });
+    } catch (error) {
+      console.log(error.response);
+    }
+
+   
   };
 
   // clear Current
@@ -102,7 +123,7 @@ function ContactState(props: any) {
   };
 
   // Filter contact
-  const filterContact = (text:any) => {
+  const filterContact = (text: any) => {
     dispatch({
       type: filter_contact,
       payload: text
@@ -117,12 +138,13 @@ function ContactState(props: any) {
     <ContactContext.Provider
       value={{
         state,
+        getContact,
         addContact,
         deleteContact,
         SetCurrent,
         clearCurrent,
         updateContact,
-        filterContact, 
+        filterContact,
         clearFilter
       }}
     >

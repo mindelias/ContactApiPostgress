@@ -1,15 +1,14 @@
 import { createContext } from "react";
-import { Istate } from './AuthReducer'
-import { Interface } from "readline";
+import { Istate } from "./AuthReducer";
 
-interface Iauth{
-    state: Istate,
-    Register: any, 
-    Login: any,
-    loadUser:any
+interface Iauth {
+  state: Istate;
+  Register: any;
+  Login: any;
+  loadUser: any;
+  LogOut: any;
 }
 
-const authContext = createContext({} as Iauth)
+const authContext = createContext({} as Iauth);
 
-
-export default authContext
+export default authContext;

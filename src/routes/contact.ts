@@ -1,6 +1,6 @@
-import express,{ Router } from "express";
+import express, { Router } from "express";
 import joi from "@hapi/joi";
-import { decodeToken} from '../helpers/helper';
+import { decodeToken } from "../helpers/helper";
 
 import {
   getContacts,
@@ -13,7 +13,7 @@ import {
 const router = Router();
 
 router.get("/contacts", async (req: express.Request, res) => {
-  const token = decodeToken(req.headers['token'])
+  const token = decodeToken(req.headers["token"]);
   const data = await getContacts(token);
 
   if (data.length === 0) {
@@ -32,7 +32,7 @@ router.get("/contact/:contactID", async (req, res) => {
     .required()
     .validate(req.params.contactID, { presence: "required" });
 
-    const token = decodeToken(req.headers['token'])
+  const token = decodeToken(req.headers["token"]);
 
   if (error) {
     res.status(400).json({ error });
@@ -53,7 +53,7 @@ router.get("/contact/:contactID", async (req, res) => {
 
 router.post("/contacts", async (req, res) => {
   const contact = req.body;
-  const token = decodeToken(req.headers['token'])
+  const token = decodeToken(req.headers["token"]);
 
   try {
     const data = await createContact(contact, token);
@@ -66,29 +66,26 @@ router.post("/contacts", async (req, res) => {
   }
 });
 
-const updateContactSchema = joi
-  .object({
-    first_name: joi
-      .string()
-      .trim()
-      .invalid("", null),
+const updateContactSchema = joi.object({
+  first_name: joi
+    .string()
+    .trim()
+    .required(),
 
-    last_name: joi.string().trim(),
+  last_name: joi.string().trim(),
 
-    phone: joi
-      .string()
-      .trim()
-      .invalid("", null),
+  phone: joi
+    .string()
+    .trim()
+    .required(),
 
-    email: joi
-      .string()
-      .trim()
-      .email(),
+  email: joi
+    .string()
+    .trim()
+    .email(),
 
-    company: joi.string().trim()
-  })
-  .rename("firstName", "first_name")
-  .rename("lastName", "last_name");
+  company: joi.string().trim()
+});
 
 router.patch("/contact/:contactID", async (req, res) => {
   const { error: idError, value: contactID } = joi
@@ -111,19 +108,23 @@ router.patch("/contact/:contactID", async (req, res) => {
   if (error) {
     throw error;
   }
-  
 
-  const token = decodeToken(req.headers['token'])
+  try {
+    const token = decodeToken(req.headers["token"]);
+    const data = await updateContact(contactID, value, token);
 
-  const data = await updateContact(contactID, value, token);
+    res.status(201).json({ data });
 
-  res.status(200).json({ data });
+    return;
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
 });
 
 router.delete("/contact/:contactID", async (req, res) => {
   const id = req.params.contactID;
-  
-  const token = decodeToken(req.headers['token'])
+
+  const token = decodeToken(req.headers["token"]);
 
   await deleteContact(id, token);
   res.status(200).json({ message: "deleted succesfuly" });

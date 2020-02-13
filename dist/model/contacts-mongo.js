@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const contactsSchema = new mongoose_1.default.Schema({
     id: { type: mongoose_1.default.SchemaTypes.String, unique: true, required: true },
-    firstName: String,
-    lastName: String,
+    first_name: String,
+    last_name: String,
     phone: mongoose_1.default.SchemaTypes.String,
     email: String,
     company: String,

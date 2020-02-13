@@ -65,7 +65,7 @@ function AddContact() {
             type="text"
             className="form-control"
             name="first_name"
-            placeholder="Enter first_name"
+            placeholder="Enter first name"
             value={contact.first_name}
             onChange={onChangeInput}
           />
@@ -74,8 +74,8 @@ function AddContact() {
           <input
             type="text"
             className="form-control"
-            name="last_name"
-            placeholder="Enter last_name"
+            name="lastName"
+            placeholder="Enter last name"
             value={contact.last_name}
             onChange={onChangeInput}
           />
