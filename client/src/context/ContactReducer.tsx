@@ -1,18 +1,26 @@
 import React from "react";
-import {add_contact, delete_contact, set_alert,set_current, clear_current, filter_contact,clear_filter,update_contact} from './types'
+import {GET_CONTACTS, add_contact, delete_contact, set_alert,set_current, clear_current, filter_contact,clear_filter,update_contact} from './types'
  
 export interface Istate {
   contacts: any[],
   current: any, 
-  filter:any
+  filter: any,
+  loading:boolean
 }
 
 function ContactReducer(state: Istate, action: any) {
   switch (action.type) {
+    case GET_CONTACTS:
+      return {
+        ...state,
+        contacts: action.payload,
+        loading:false
+      };
+
     case add_contact:
       return {
         ...state,
-        contacts: [...state.contacts, action.payload]
+        contacts: [...state.contacts, ...action.payload]
       };
     case update_contact:
       return {

@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 export type Contact = {
   id: string;
-  firstName: string;
-  lastName?: string;
+  first_name: string;
+  last_name?: string;
   phone: string;
   email?: string;
   company?: string;
@@ -16,8 +16,8 @@ type ContactType = Contact & mongoose.Document;
 
 const contactsSchema = new mongoose.Schema({
   id: { type: mongoose.SchemaTypes.String, unique: true, required: true },
-  firstName: String,
-  lastName: String,
+  first_name: String,
+  last_name: String,
   phone: mongoose.SchemaTypes.String,
   email: String,
   company: String,

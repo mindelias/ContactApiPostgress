@@ -17,12 +17,12 @@ export async function getContactByID(contactID: string, decoded:any) {
 type CreateContact = Omit<Contact, "id" | "createdAt" | "updatedAt">;
 
 const createContactSchema = joi.object<CreateContact>({
-  firstName: joi
+  first_name: joi
     .string()
     .trim()
     .required(),
 
-  lastName: joi.string().trim(),
+  last_name: joi.string().trim(),
 
   phone: joi
     .string()
@@ -47,7 +47,7 @@ export function createContact(contact: CreateContact, decoded:any) {
     throw error;
   }
 
-  return db.query(sql`INSERT INTO contacts(first_name, last_name, phone, email, company, user_id) VALUES(${value.firstName}, ${value.lastName}, ${value.phone}, ${value.email}, ${value.company}, ${decoded.id})
+  return db.query(sql`INSERT INTO contacts(first_name, last_name, phone, email, company, user_id) VALUES(${value.first_name}, ${value.last_name}, ${value.phone}, ${value.email}, ${value.company}, ${decoded.id})
   RETURNING *
   `);
 }
@@ -58,7 +58,7 @@ export async function deleteContact(contactID: string, decoded:any) {
 
 export async function updateContact(
   contactID: string,
-  contact: Partial<Contact>,
+  contact: Contact,
   decoded:any
 ) {
    

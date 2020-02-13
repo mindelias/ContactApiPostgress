@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const users_1 = require("../controllers/users");
 const helper_1 = require("../helpers/helper");
+const auth_1 = __importDefault(require("../routes/auth"));
 const router = express_1.Router();
 router.get("/users/register", async (_req, res) => {
     const data = await users_1.getUsers();
@@ -26,7 +30,7 @@ router.post("/users/register", async (req, res) => {
         return res.status(400).json({ err });
     }
 });
-router.get("/users/login", async (req, res) => {
+router.get("/users/login", auth_1.default, async (req, res) => {
     const token = helper_1.decodeToken(req.headers["token"]);
     try {
         const data = await users_1.getLoggedUsers(token);

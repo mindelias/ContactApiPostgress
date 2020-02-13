@@ -6,6 +6,7 @@ import {
   getLoggedUsers
 } from "../controllers/users";
 import { decodeToken } from "../helpers/helper";
+import authenticate from '../routes/auth'
 
 const router = Router();
 
@@ -37,7 +38,7 @@ router.post("/users/register", async (req, res) => {
   }
 });
 
-router.get("/users/login", async (req: express.Request, res) => {
+router.get("/users/login", authenticate, async (req: express.Request, res) => {
   const token = decodeToken(req.headers["token"]);
   try {
     const data = await getLoggedUsers(token);

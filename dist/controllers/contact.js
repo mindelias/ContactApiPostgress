@@ -16,11 +16,11 @@ async function getContactByID(contactID, decoded) {
 }
 exports.getContactByID = getContactByID;
 const createContactSchema = joi_1.default.object({
-    firstName: joi_1.default
+    first_name: joi_1.default
         .string()
         .trim()
         .required(),
-    lastName: joi_1.default.string().trim(),
+    last_name: joi_1.default.string().trim(),
     phone: joi_1.default
         .string()
         .trim()
@@ -39,7 +39,7 @@ function createContact(contact, decoded) {
     if (error) {
         throw error;
     }
-    return contact_postgres_1.db.query(contact_postgres_1.sql `INSERT INTO contacts(first_name, last_name, phone, email, company, user_id) VALUES(${value.firstName}, ${value.lastName}, ${value.phone}, ${value.email}, ${value.company}, ${decoded.id})
+    return contact_postgres_1.db.query(contact_postgres_1.sql `INSERT INTO contacts(first_name, last_name, phone, email, company, user_id) VALUES(${value.first_name}, ${value.last_name}, ${value.phone}, ${value.email}, ${value.company}, ${decoded.id})
   RETURNING *
   `);
 }

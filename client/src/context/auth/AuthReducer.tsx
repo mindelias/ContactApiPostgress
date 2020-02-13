@@ -11,10 +11,10 @@ import {
 } from "../types";
 
 export interface Istate {
-  token: string | null;
+  token: string;
   isAuthenticated: boolean | null;
   loading: boolean;
-  user: boolean | null;
+  user:any;
   error: string | null;
 }
 
@@ -25,10 +25,11 @@ function AuthReducer(state: Istate, action: any) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: action.payload
+        user: action.payload.data[0]
       };
     case REGISTER_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("token", action.payload.data[0].token);
+      // console.log(action.payload.token, "verfy token")
       return {
         ...state,
         ...action.payload,
@@ -37,7 +38,9 @@ function AuthReducer(state: Istate, action: any) {
         error: false
       };
     case REGISTER_FAIL:
+    case LOGIN_FAIL:
     case AUTH_ERROR:
+    case LOGOUT:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -48,7 +51,8 @@ function AuthReducer(state: Istate, action: any) {
         error: action.payload
       };
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("token", action.payload.data[0].token);
+      // console.log(action.payload.data[0].token, "verfy token");
       return {
         ...state,
         ...action.payload,

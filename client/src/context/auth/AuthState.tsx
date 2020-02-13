@@ -33,6 +33,28 @@ const initialState = {
 
 function AuthState(props: any) {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
+  // Load user
+
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+
+    try {
+      const res = await axios.get("/api/users/login");
+      console.log(res.data.data[0]);
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data
+      });
+    } catch (error) {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: error.response
+      });
+      console.log(error.response);
+    }
+  };
 
   // Register User
   const Register = async (data: formData) => {
@@ -44,32 +66,16 @@ function AuthState(props: any) {
     try {
       const res = await axios.post("/api/users/register", data, config);
       console.log(res.data.data[0]);
-      dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-      
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+
       loadUser();
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
         payload: error.response.data.error
-      });
-      console.log(error.response);
-    }
-  };
-  // Load user
-
-  const loadUser = async () => {
-    if (localStorage.token) {
-      setAuthToken(localStorage.token);
-    }
-
-    try {
-      const res = await axios.get("/api/users/login");
-      console.log(res.data.data[0]);
-      dispatch({ type: USER_LOADED, payload: res.data });
-    } catch (error) {
-      dispatch({
-        type: AUTH_ERROR,
-        payload: error.response.data
       });
       console.log(error.response);
     }
@@ -85,7 +91,11 @@ function AuthState(props: any) {
     try {
       const res = await axios.post("/api/users/login", data, config);
       console.log(res.data.data[0]);
-      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+      loadUser();
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,
@@ -94,6 +104,10 @@ function AuthState(props: any) {
       console.log(error.response);
     }
   };
+  // logout User
+  const LogOut = async () => {
+    dispatch({ type: LOGOUT });
+  };
 
   return (
     <AuthContext.Provider
@@ -101,7 +115,8 @@ function AuthState(props: any) {
         state,
         Register,
         Login,
-        loadUser
+        loadUser,
+        LogOut
       }}
     >
       {props.children}
